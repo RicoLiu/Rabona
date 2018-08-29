@@ -1,0 +1,31 @@
+{
+  "name": "rabona",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack --mode development",
+    "build": "webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RicoLiu/Rabona.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RicoLiu/Rabona/issues"
+  },
+  "homepage": "https://github.com/RicoLiu/Rabona#readme",
+  "devDependencies": {
+    "css-loader": "^1.0.0",
+    "ts-loader": "^4.5.0",
+    "typescript": "^3.0.1",
+    "vue": "^2.5.17",
+    "vue-loader": "^15.4.1",
+    "vue-template-compiler": "^2.5.17",
+    "webpack": "^4.17.1",
+    "webpack-cli": "^3.1.0"
+  },
+  "dependencies": {}
+}
