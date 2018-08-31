@@ -14,12 +14,12 @@ import Vue from 'vue';
 import { mapGetters, mapActions } from 'vuex';
 
 export default Vue.extend({
-  computed: mapGetters([
+  computed: mapGetters('counter', [
     'evenOrOdd',
     'countNumber',
   ]),
   methods: {
-    ...mapActions([
+    ...mapActions('counter', [
       'increment',
       'decrement',
       'incrementIfOdd',
