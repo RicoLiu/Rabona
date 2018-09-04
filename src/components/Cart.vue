@@ -26,9 +26,35 @@
 import Vue from 'vue';
 import { mapGetters } from 'vuex';
 import { Button, Tag } from 'element-ui';
+import { CartProduct, CheckoutStatus } from '../store/interface';
+import store from '../store/index';
+
+Vue.use(Button);
+Vue.use(Tag);
+
+const dispatchCheckout = (products: CartProduct[]) => store.dispatch('checkout', products);
 
 export default Vue.extend({
-
+  computed: {
+    ...mapGetters({
+      products: 'cartProducts',
+      checkoutStatus: 'checkoutStatus',
+    }),
+    products(): CartProduct[] {
+      return this.$store.getters.cartProducts;
+    },
+    checkoutStatus(): CheckoutStatus {
+      return this.$store.getters.checkoutStatus;
+    },
+    total(): number {
+      return this.products.reduce((total, p) => total + (p.price * p.quantity), 0);
+    },
+  },
+  methods: {
+    checkout(products: CartProduct[]) {
+      dispatchCheckout(products);
+    },
+  },
 });
 </script>
 

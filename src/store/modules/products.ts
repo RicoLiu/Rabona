@@ -1,15 +1,14 @@
-import { Commit, Dispatch } from 'vuex';
 import shop from '../../api/shop';
 import * as types from '../utils';
 import { Product, ActionContextBasic, AddToCartPayload } from '../interface';
 
 export interface ProductsPayload {
   products: Product[],
-};
+}
 
 export interface State {
   all: Product[],
-};
+}
 
 // initial state
 const initState = {
@@ -29,7 +28,7 @@ const actions = {
         products,
       };
       context.commit(types.RECEIVE_PRODUCTS, payload);
-    })
+    });
   },
 };
 
@@ -40,7 +39,7 @@ const mutations = {
   },
 
   [types.ADD_TO_CART](state: State, payload: AddToCartPayload) {
-    const product = state.all.find((p) => p.id === payload.id);
+    const product = state.all.find(p => p.id === payload.id);
     if (product) {
       product.inventory -= 1;
     }

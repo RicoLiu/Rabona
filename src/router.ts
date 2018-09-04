@@ -24,7 +24,7 @@ export default new Router({
     {
       path: '/shopping',
       name: 'todo',
-      component: () => import('@/views/ShoppingCart.vue'),
+      component: () => import('./views/ShoppingCart.vue'),
     },
   ],
 });

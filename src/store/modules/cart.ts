@@ -1,84 +1,97 @@
-import { Commit } from 'vuex'
-import shop from '../../api/shop'
-import * as types from '../utils'
-import { CheckoutStatus, CartProduct, AddToCartPayload} from '../interface'
+import { Commit, GetterTree, Getter } from 'vuex';
+import shop from '../../api/shop';
+import * as types from '../utils';
+import { CheckoutStatus, CartProduct, AddToCartPayload, State } from '../interface';
 
 interface Shape {
-  id: number
-  quantity: number
+  id: number,
+  quantity: number,
 }
 
 interface CheckoutFailurePayload {
-  savedCartItems: Shape[]
+  savedCartItems: Shape[],
 }
 
-export interface State {
-  added: Shape[]
-  checkoutStatus: CheckoutStatus
+export interface CartState {
+  added: Shape[],
+  checkoutStatus: CheckoutStatus,
 }
 
 // initial state
 // shape: [{ id, quantity }]
-const initState: State = {
+const initState: CartState = {
   added: [],
   checkoutStatus: null,
-}
+};
 
 // getters
-const getters = {
-  checkoutStatus: (state: State) => state.checkoutStatus,
-}
+const getters: GetterTree<any, any> = {
+  checkoutStatus: (state: CartState) => state.checkoutStatus,
+  cartProducts: (state: State) => {
+    return state.cart.added.map((shape) => {
+      const product = state.products.all.find(p => p.id === shape.id);
+      if (product) {
+        const cartProduct: CartProduct = {
+          title: product.title,
+          price: product.price,
+          quantity: shape.quantity,
+        };
+        return cartProduct;
+      }
+    });
+  },
+};
 
 // actions
 const actions = {
-  checkout(context: { commit: Commit; state: State }, products: CartProduct[]) {
+  checkout(context: { commit: Commit; state: CartState }, products: CartProduct[]) {
     const failurePayload: CheckoutFailurePayload = {
       savedCartItems: [...context.state.added],
-    }
-    context.commit(types.CHECKOUT_REQUEST)
+    };
+    context.commit(types.CHECKOUT_REQUEST);
     shop.buyProducts(
       products,
       () => context.commit(types.CHECKOUT_SUCCESS),
       () => context.commit(types.CHECKOUT_FAILURE, failurePayload),
-    )
+    );
   },
-}
+};
 
 // mutations
 const mutations = {
-  [types.ADD_TO_CART](state: State, payload: AddToCartPayload) {
-    state.checkoutStatus = null
-    const record = state.added.find((p) => p.id === payload.id)
+  [types.ADD_TO_CART](state: CartState, payload: AddToCartPayload) {
+    state.checkoutStatus = null;
+    const record = state.added.find(p => p.id === payload.id);
     if (!record) {
       state.added.push({
         id: payload.id,
         quantity: 1,
-      })
+      });
     } else {
-      record.quantity++
+      record.quantity += 1;
     }
   },
 
-  [types.CHECKOUT_REQUEST](state: State) {
+  [types.CHECKOUT_REQUEST](state: CartState) {
     // clear cart
-    state.added = []
-    state.checkoutStatus = null
+    state.added = [];
+    state.checkoutStatus = null;
   },
 
-  [types.CHECKOUT_SUCCESS](state: State) {
-    state.checkoutStatus = 'successful'
+  [types.CHECKOUT_SUCCESS](state: CartState) {
+    state.checkoutStatus = 'successful';
   },
 
-  [types.CHECKOUT_FAILURE](state: State, payload: CheckoutFailurePayload) {
+  [types.CHECKOUT_FAILURE](state: CartState, payload: CheckoutFailurePayload) {
     // rollback to the cart saved before sending the request
-    state.added = payload.savedCartItems
-    state.checkoutStatus = 'failed'
+    state.added = payload.savedCartItems;
+    state.checkoutStatus = 'failed';
   },
-}
+};
 
 export default {
   state: initState,
   getters,
   actions,
   mutations,
-}
+};
