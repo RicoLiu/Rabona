@@ -13,5 +13,5 @@ export function currencyFilter(value: any, currency: any, decimals: any) {
   const head = i > 0 ? intVal.slice(0, i) + (intVal.length > 3 ? ',' : '') : '';
   const floatVal = decimals ? stringified.slice(-1 - decimals) : '';
   const sign = value < 0 ? '-' : '';
-  return ( sign + currency + head + intVal.slice(i).replace(digitsRE, '$1,') + floatVal )
+  return (sign + currency + head + intVal.slice(i).replace(digitsRE, '$1,') + floatVal);
 }

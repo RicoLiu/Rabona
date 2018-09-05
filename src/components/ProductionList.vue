@@ -40,3 +40,15 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style lang="scss" scoped>
+ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+.list {
+  li {
+    padding: 5px 0;
+  }
+}
+</style>

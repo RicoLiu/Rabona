@@ -1,7 +1,7 @@
 import { Commit, GetterTree, Getter } from 'vuex';
 import shop from '../../api/shop';
 import * as types from '../utils';
-import { CheckoutStatus, CartProduct, AddToCartPayload, State } from '../interface';
+import { CheckoutStatus, CartProduct, AddToCartPayload } from '../interface';
 
 interface Shape {
   id: number,
@@ -27,19 +27,6 @@ const initState: CartState = {
 // getters
 const getters: GetterTree<any, any> = {
   checkoutStatus: (state: CartState) => state.checkoutStatus,
-  cartProducts: (state: State) => {
-    return state.cart.added.map((shape) => {
-      const product = state.products.all.find(p => p.id === shape.id);
-      if (product) {
-        const cartProduct: CartProduct = {
-          title: product.title,
-          price: product.price,
-          quantity: shape.quantity,
-        };
-        return cartProduct;
-      }
-    });
-  },
 };
 
 // actions
