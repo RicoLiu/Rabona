@@ -23,8 +23,13 @@ export default new Router({
     },
     {
       path: '/shopping',
-      name: 'todo',
+      name: 'shopping',
       component: () => import('./views/ShoppingCart.vue'),
+    },
+    {
+      path: '/todo',
+      name: 'todo',
+      component: () => import('./views/Todo.vue'),
     },
   ],
 });
