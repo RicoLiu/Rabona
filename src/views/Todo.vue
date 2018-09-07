@@ -31,7 +31,7 @@
         {{ remaining | pluralize('item') }} left
       </span>
       <ul class="filters">
-        <li v-for="(val, key) in filters">
+        <li v-for="(val, key, index) in filters" :key="index">
           <a :href="'#/' + key"
             :class="{ selected: visibility === key }"
             @click="visibility = key">{{ key | capitalize }}</a>
@@ -59,11 +59,11 @@ const filters = {
 
 export default Vue.extend({
   components: { TodoItem },
-  data () {
+  data() {
     return {
       visibility: 'all',
       filters: filters,
-    }
+    };
   },
   computed: {
     todos(): any {
@@ -84,7 +84,7 @@ export default Vue.extend({
       'toggleAll',
       'clearCompleted',
     ]),
-    addTodo (e: any) {
+    addTodo(e: any) {
       const text = e.target.value;
       if (text.trim()) {
         this.$store.dispatch('addTodo', text);
@@ -93,8 +93,8 @@ export default Vue.extend({
     },
   },
   filters: {
-    pluralize: (n, w) => n === 1 ? w : (w + 's'),
+    pluralize: (n: any, w: any) => n === 1 ? w : (w + 's'),
     capitalize: (s: string) => s.charAt(0).toUpperCase() + s.slice(1),
-  }
-})
+  },
+});
 </script>
